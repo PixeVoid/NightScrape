@@ -1,6 +1,6 @@
 export default function ThemeToggle({ theme, onChange }) {
   return (
-    <div className="theme-toggle" role="group" aria-label="Theme">
+    <div className="theme-toggle" role="group" aria-label="Theme" data-theme={theme}>
       <button
         className={theme === "light" ? "active" : ""}
         aria-label="Light mode"
