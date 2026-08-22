@@ -19,6 +19,12 @@ const VENUE_COORDS = {
   "3 Art House": [19.1365, 72.8294],
   "NGMA Mumbai": [18.9288, 72.8347],
   "Experimenter Gallery": [18.9245, 72.8322],
+  "R-City Mall": [19.0908, 72.9077],
+  "Phoenix Marketcity": [19.0863, 72.8887],
+  "The Fine Arts Society": [19.053, 72.896],
+  "Dome India": [18.9865, 72.8157],
+  "Prithvi Theatre": [19.1062, 72.8257],
+  "St. Andrew's Auditorium": [19.0607, 72.8362],
 };
 
 function firstNonEmpty(...vals) {
@@ -291,6 +297,102 @@ loadRaw("experimenter").forEach((e, i) => {
     time: null,
     ticketUrl: e.product_page_url,
     coords: VENUE_COORDS["Experimenter Gallery"],
+    complete,
+  }));
+});
+
+// --- R-City Mall (Ghatkopar / Powai side) ---
+loadRaw("rcity").forEach((e, i) => {
+  const complete = !!(e.event_name && e.event_date);
+  out.push(makeEvent({
+    idPrefix: "rcity-", i,
+    venue: "R-City Mall",
+    title: e.event_name,
+    genre: "Culture",
+    date: extractDate(e.event_date),
+    time: extractTime(e.event_time),
+    ticketUrl: e.ticket_link,
+    coords: [19.0908, 72.9077],
+    complete,
+  }));
+});
+
+// --- Phoenix Marketcity (Kurla / Eastern Freeway) ---
+loadRaw("phoenix").forEach((e, i) => {
+  const complete = !!(e.event_name && e.event_date);
+  out.push(makeEvent({
+    idPrefix: "phoenix-", i,
+    venue: "Phoenix Marketcity",
+    title: e.event_name,
+    genre: "Music",
+    date: extractDate(e.event_date),
+    time: extractTime(e.event_time),
+    ticketUrl: e.ticket_link,
+    coords: [19.0863, 72.8887],
+    complete,
+  }));
+});
+
+// --- The Fine Arts Society (Chembur / Eastern) ---
+loadRaw("finearts").forEach((e, i) => {
+  const complete = !!(e.event_name && e.event_date);
+  out.push(makeEvent({
+    idPrefix: "fas-", i,
+    venue: "The Fine Arts Society",
+    title: e.event_name,
+    genre: "Music",
+    date: extractDate(e.event_date),
+    time: extractTime(e.event_time),
+    ticketUrl: e.ticket_link,
+    coords: [19.053, 72.896],
+    complete,
+  }));
+});
+
+// --- Dome India / NSCI (Worli / coastal) ---
+loadRaw("dome").forEach((e, i) => {
+  const complete = !!(e.event_name && e.event_date);
+  out.push(makeEvent({
+    idPrefix: "dome-", i,
+    venue: "Dome India",
+    title: e.event_name,
+    genre: e.event_name.toLowerCase().includes("padel") ? "Other Events" : "Culture",
+    date: extractDate(e.event_date),
+    time: extractTime(e.event_time),
+    ticketUrl: e.ticket_link,
+    coords: [18.9865, 72.8157],
+    complete,
+  }));
+});
+
+// --- Prithvi Theatre (Juhu / western suburbs) ---
+loadRaw("prithvi").forEach((e, i) => {
+  const complete = !!(e.event_name && e.event_date);
+  out.push(makeEvent({
+    idPrefix: "prithvi-", i,
+    venue: "Prithvi Theatre",
+    title: e.event_name,
+    genre: e.event_name.toLowerCase().includes("jazz") ? "Music" : "Performing Arts",
+    date: extractDate(e.event_date),
+    time: extractTime(e.event_time),
+    ticketUrl: e.ticket_link,
+    coords: [19.1062, 72.8257],
+    complete,
+  }));
+});
+
+// --- St. Andrew's Auditorium (Bandra / western suburbs) ---
+loadRaw("standrews").forEach((e, i) => {
+  const complete = !!(e.event_name && e.event_date);
+  out.push(makeEvent({
+    idPrefix: "standrews-", i,
+    venue: "St. Andrew's Auditorium",
+    title: e.event_name,
+    genre: e.event_name.toLowerCase().includes("theatre") || e.event_name.toLowerCase().includes("raavan") ? "Theatre" : "Music",
+    date: extractDate(e.event_date),
+    time: extractTime(e.event_time),
+    ticketUrl: e.ticket_link,
+    coords: [19.0607, 72.8362],
     complete,
   }));
 });
