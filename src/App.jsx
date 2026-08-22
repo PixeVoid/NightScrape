@@ -8,7 +8,7 @@ import { EVENTS, GENRES } from "./data/events";
 import "./App.css";
 
 const CITY_NAME = "Mumbai";
-const TODAY = "2026-08-22";
+const TODAY = new Date().toISOString().slice(0, 10);
 
 function getInitialTheme() {
   try {
@@ -23,7 +23,7 @@ function getInitialTheme() {
 export default function App() {
   const [theme, setTheme] = useState(getInitialTheme);
   const [activeGenres, setActiveGenres] = useState(() => new Set());
-  const [selectedId, setSelectedId] = useState("e1");
+  const [selectedId, setSelectedId] = useState(() => EVENTS.find((e) => e.status === "ok")?.id ?? null);
 
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", theme);
@@ -53,7 +53,8 @@ export default function App() {
 
   const selectedEvent = filtered.find((e) => e.id === selectedId) ?? filtered.find((e) => e.status === "ok");
 
-  const liveCount = EVENTS.filter((e) => e.status === "ok").length;
+  const liveVenueCount = new Set(EVENTS.filter((e) => e.status === "ok").map((e) => e.venue)).size;
+  const totalVenueCount = new Set(EVENTS.map((e) => e.venue)).size;
 
   return (
     <div className="stage">
@@ -67,10 +68,8 @@ export default function App() {
           <div className="topbar-meta">
             <span>{CITY_NAME}</span>
             <span>&middot;</span>
-            <span>Fri Aug 22</span>
-            <span>&middot;</span>
             <span>
-              <b>{liveCount}</b> venues tracked live
+              <b>{liveVenueCount}</b> / {totalVenueCount} venues tracked live
             </span>
           </div>
           <ThemeToggle theme={theme} onChange={setTheme} />

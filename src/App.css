@@ -91,9 +91,12 @@ body {
 }
 
 .pin-marker {
-  display: block;
-  width: 16px;
-  height: 16px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
   background: var(--red);
   border: 2px solid var(--red-ink);
@@ -102,8 +105,8 @@ body {
   box-sizing: border-box;
 }
 .pin-marker.active {
-  width: 20px;
-  height: 20px;
+  width: 26px;
+  height: 26px;
   box-shadow: 0 0 0 5px rgba(255, 75, 43, 0.35), 0 2px 8px rgba(0, 0, 0, 0.5);
 }
 .pin-marker.dead {
@@ -112,6 +115,15 @@ body {
   box-shadow: none;
   cursor: default;
 }
+.pin-count {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--red-ink);
+  line-height: 1;
+}
+.pin-marker.active .pin-count { font-size: 11px; }
+.pin-marker.dead .pin-count { color: var(--ink-faint); }
 
 /* ===== Top chrome ===== */
 .topbar {

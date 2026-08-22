@@ -1,115 +1,14 @@
-// This is the shape Person A's scraper output must match.
-// Core fields: { id, venue, title, genre, date, time, lat, lng, ticketUrl, status }
-// status is "ok" for a normal event, or "failed" if that venue's scrape broke
-// (used for the "report failed venues instead of showing an empty map" requirement).
-// entry/distanceKm/sets are optional extras shown in the dossier panel — omit if
-// the scraper doesn't collect them, the UI falls back to a placeholder.
+// Real scraper output from 8 Mumbai venues (Bright Data Scraper Studio),
+// normalized by scraper/normalize.mjs from the raw per-collector JSON in
+// scraper/*.json. Re-run that script and re-copy the output here after any
+// new scraper run — see scraper/venues.md for collector IDs and per-venue notes.
+//
+// Contract: { id, venue, title, genre, date, time, lat, lng, ticketUrl, status }
+// status is "ok" for a usable listing, or "failed" if the scraped entry was
+// missing a title/date (shown as a flagged card instead of being hidden).
 
-export const GENRES = ["Jazz", "Rock", "Electronic", "Comedy", "Theatre", "Open Mic"];
+import rawEvents from "./normalized-events.json";
 
-export const EVENTS = [
-  {
-    id: "e1",
-    venue: "Blue Note Lounge",
-    title: "Jazz Night with The Midnight Trio",
-    genre: "Jazz",
-    date: "2026-08-22",
-    time: "21:00",
-    lat: 19.076,
-    lng: 72.8777,
-    ticketUrl: "https://example.com/tickets/e1",
-    status: "ok",
-    entry: "₹400",
-    distanceKm: 1.8,
-    sets: 3,
-  },
-  {
-    id: "e2",
-    venue: "The Rust Room",
-    title: "Open Mic Comedy Night",
-    genre: "Comedy",
-    date: "2026-08-22",
-    time: "20:00",
-    lat: 19.0825,
-    lng: 72.8811,
-    ticketUrl: "https://example.com/tickets/e2",
-    status: "ok",
-    entry: "Free",
-    distanceKm: 3.2,
-    sets: 8,
-  },
-  {
-    id: "e3",
-    venue: "Warehouse 9",
-    title: "Bass Collective: Late Night Set",
-    genre: "Electronic",
-    date: "2026-08-22",
-    time: "23:00",
-    lat: 19.0596,
-    lng: 72.8295,
-    ticketUrl: "https://example.com/tickets/e3",
-    status: "ok",
-    entry: "₹700",
-    distanceKm: 6.4,
-    sets: 1,
-  },
-  {
-    id: "e4",
-    venue: "Riverside Theatre",
-    title: "A Midsummer Night's Dream",
-    genre: "Theatre",
-    date: "2026-08-23",
-    time: "19:30",
-    lat: 19.0176,
-    lng: 72.8562,
-    ticketUrl: "https://example.com/tickets/e4",
-    status: "ok",
-    entry: "₹350",
-    distanceKm: 5.1,
-    sets: 1,
-  },
-  {
-    id: "e5",
-    venue: "The Garage Bar",
-    title: "Local Rock Showcase",
-    genre: "Rock",
-    date: "2026-08-22",
-    time: "22:00",
-    lat: 19.1136,
-    lng: 72.8697,
-    ticketUrl: "https://example.com/tickets/e5",
-    status: "ok",
-    entry: "₹300",
-    distanceKm: 4.0,
-    sets: 4,
-  },
-  {
-    id: "e6",
-    venue: "Sunset Rooftop",
-    title: "Acoustic Sundowner",
-    genre: "Open Mic",
-    date: "2026-08-23",
-    time: "18:00",
-    lat: 19.0522,
-    lng: 72.8994,
-    ticketUrl: "https://example.com/tickets/e6",
-    status: "ok",
-    entry: "Free",
-    distanceKm: 2.6,
-    sets: 6,
-  },
-  // Placeholder for the venue that will break the scraper (JS-rendered calendar).
-  // Once Person A heals the collector, replace this with the real event(s).
-  {
-    id: "e7",
-    venue: "Nova Club",
-    title: null,
-    genre: null,
-    date: null,
-    time: null,
-    lat: 19.099,
-    lng: 72.8479,
-    ticketUrl: null,
-    status: "failed",
-  },
-];
+export const EVENTS = rawEvents;
+
+export const GENRES = [...new Set(EVENTS.filter((e) => e.status === "ok").map((e) => e.genre))].sort();
