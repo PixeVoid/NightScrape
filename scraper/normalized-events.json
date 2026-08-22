@@ -1510,5 +1510,89 @@
     "lng": 72.8407,
     "ticketUrl": "https://doolally.in/web/event-details/Screen-Printing-Workshop-256",
     "status": "failed"
+  },
+  {
+    "id": "3arthouse-0",
+    "venue": "3 Art House",
+    "title": "Indoor Picnic Brunch",
+    "genre": "Art",
+    "date": "2026-08-23",
+    "time": "11:00",
+    "lat": 19.1365,
+    "lng": 72.8294,
+    "ticketUrl": "https://www.3arthouse.com/",
+    "status": "ok"
+  },
+  {
+    "id": "3arthouse-1",
+    "venue": "3 Art House",
+    "title": "Intro to Oil Painting",
+    "genre": "Art",
+    "date": "2026-08-23",
+    "time": "15:00",
+    "lat": 19.1365,
+    "lng": 72.8294,
+    "ticketUrl": "https://www.3arthouse.com/",
+    "status": "ok"
+  },
+  {
+    "id": "3arthouse-2",
+    "venue": "3 Art House",
+    "title": "Sketching Evening",
+    "genre": "Art",
+    "date": "2026-08-26",
+    "time": "18:00",
+    "lat": 19.1365,
+    "lng": 72.8294,
+    "ticketUrl": "https://www.3arthouse.com/",
+    "status": "ok"
+  },
+  {
+    "id": "3arthouse-3",
+    "venue": "3 Art House",
+    "title": "Creative Writing",
+    "genre": "Art",
+    "date": "2026-08-26",
+    "time": "18:00",
+    "lat": 19.1365,
+    "lng": 72.8294,
+    "ticketUrl": "https://www.3arthouse.com/",
+    "status": "ok"
+  },
+  {
+    "id": "ngma-0",
+    "venue": "NGMA Mumbai",
+    "title": "New Stories: Women in Photography, India",
+    "genre": "Photography",
+    "date": "2026-08-16",
+    "time": null,
+    "lat": 18.9288,
+    "lng": 72.8347,
+    "ticketUrl": null,
+    "status": "ok"
+  },
+  {
+    "id": "ngma-1",
+    "venue": "NGMA Mumbai",
+    "title": "India's Freedom Legacy: The Unsung, The Unforgotten",
+    "genre": "Photography",
+    "date": "2026-08-16",
+    "time": null,
+    "lat": 18.9288,
+    "lng": 72.8347,
+    "ticketUrl": null,
+    "status": "ok"
+  },
+  {
+    "id": "experimenter-0",
+    "venue": "Experimenter Gallery",
+    "title": "Sahil Naik | Sour Stars and Breadfruit Monsoons",
+    "genre": "Art",
+    "date": "2026-07-31",
+    "time": null,
+    "lat": 18.9245,
+    "lng": 72.8322,
+    "ticketUrl": "https://experimenter.in/exhibitions/162-sahil-naik-sour-stars-and-breadfruit-monsoons-experimenter-colaba-mumbai/overview/",
+    "status": "ok"
   }
 ]

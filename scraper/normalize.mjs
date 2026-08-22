@@ -16,6 +16,9 @@ const VENUE_COORDS = {
   "Jehangir Art Gallery": [18.9276, 72.832],
   "Art Mumbai": [18.922, 72.8347],
   "Doolally Taproom": [19.0552, 72.8407],
+  "3 Art House": [19.1365, 72.8294],
+  "NGMA Mumbai": [18.9288, 72.8347],
+  "Experimenter Gallery": [18.9245, 72.8322],
 };
 
 function firstNonEmpty(...vals) {
@@ -240,6 +243,54 @@ loadRaw("doolally").forEach((e, i) => {
     time: extractTime(e.event_time, e.time),
     ticketUrl: e.product_page_url,
     coords: VENUE_COORDS["Doolally Taproom"],
+    complete,
+  }));
+});
+
+// --- 3 Art House (Khar West workshop space) ---
+loadRaw("3arthouse").forEach((e, i) => {
+  const complete = !!(e.event_name && e.event_date);
+  out.push(makeEvent({
+    idPrefix: "3arthouse-", i,
+    venue: "3 Art House",
+    title: e.event_name,
+    genre: "Art",
+    date: extractDate(e.event_date),
+    time: extractTime(e.event_time),
+    ticketUrl: e.ticket_link,
+    coords: VENUE_COORDS["3 Art House"],
+    complete,
+  }));
+});
+
+// --- NGMA Mumbai (National Gallery of Modern Art, free exhibitions) ---
+loadRaw("ngma").forEach((e, i) => {
+  const complete = !!(e.exhibition_name && e.exhibition_date);
+  out.push(makeEvent({
+    idPrefix: "ngma-", i,
+    venue: "NGMA Mumbai",
+    title: dedupeRepeatedText(firstNonEmpty(e.exhibition_name, e.exhibition_subtitle)),
+    genre: "Photography",
+    date: extractDate(e.exhibition_date),
+    time: null,
+    ticketUrl: null,
+    coords: VENUE_COORDS["NGMA Mumbai"],
+    complete,
+  }));
+});
+
+// --- Experimenter Gallery (Colaba contemporary art) ---
+loadRaw("experimenter").forEach((e, i) => {
+  const complete = !!(e.exhibition_name && e.exhibition_date);
+  out.push(makeEvent({
+    idPrefix: "experimenter-", i,
+    venue: "Experimenter Gallery",
+    title: dedupeRepeatedText(firstNonEmpty(e.exhibition_name, e.exhibition_subtitle)),
+    genre: "Art",
+    date: extractDate(e.exhibition_date),
+    time: null,
+    ticketUrl: e.product_page_url,
+    coords: VENUE_COORDS["Experimenter Gallery"],
     complete,
   }));
 });

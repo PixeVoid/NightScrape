@@ -1,0 +1,26 @@
+[
+  {
+    "event_name": "Indoor Picnic Brunch",
+    "event_date": "23 Aug 2026",
+    "event_time": "11:00 am",
+    "ticket_link": "https://www.3arthouse.com/"
+  },
+  {
+    "event_name": "Intro to Oil Painting",
+    "event_date": "23 Aug 2026",
+    "event_time": "3:00 pm",
+    "ticket_link": "https://www.3arthouse.com/"
+  },
+  {
+    "event_name": "Sketching Evening",
+    "event_date": "26 Aug 2026",
+    "event_time": "6:00 pm",
+    "ticket_link": "https://www.3arthouse.com/"
+  },
+  {
+    "event_name": "Creative Writing",
+    "event_date": "26 Aug 2026",
+    "event_time": "6:00 pm",
+    "ticket_link": "https://www.3arthouse.com/"
+  }
+]
