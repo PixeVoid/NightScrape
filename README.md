@@ -1,6 +1,8 @@
 # NightScrape
 
-<!-- TODO: one or two sentence description once the real data/scraper is wired in -->
+A real-time interactive map of Mumbai venue events — scrape, normalize, and explore what's happening tonight across 10+ venues.
+
+🌐 **Live demo:** [https://night-scrape.vercel.app/](https://night-scrape.vercel.app/)
 
 Built for the [Into the Scrape-Verse](https://www.wemakedevs.org/hackathons/scrape-verse) hackathon, using [Bright Data Scraper Studio](https://docs.brightdata.com/datasets/scraper-studio/overview).
 
@@ -47,7 +49,9 @@ npx -p @brightdata/cli bdata scraper approve <COLLECTOR_ID> --url <URL>
 
 ## What it does
 
-<!-- TODO -->
+NightScrape scrapes event listings from 10 Mumbai venues (The Habitat, Royal Opera House, TARQ, NCPA, Alliance Française, Jehangir Art Gallery, Art Mumbai, Doolally Taproom, 3 Art House, NGMA Mumbai, Experimenter Gallery) using Bright Data Scraper Studio. Each venue has a custom collector that handles its unique HTML/JS structure. The raw data is normalized into a unified contract (`{ id, venue, title, genre, date, time, lat, lng, ticketUrl, status }`) and rendered on an interactive CARTO map with venue pins connected by a spider-web network.
+
+The UI features: a live Mumbai clock in the top bar, genre filter pills with live event counts and a More/Less toggle, real-time search across the event rail, a dossier panel with a countdown timer and scroll hint, spring-physics animations on cards and chips, and a theme toggle with rotating sun/moon icons. Failed scrapes are surfaced honestly — dashed pins and flagged cards — rather than hidden.
 
 ## Data
 
@@ -61,11 +65,29 @@ Event data lives in `src/data/events.js`, shaped as:
 
 ## How we used Scraper Studio
 
-<!-- TODO: what we're scraping, how the Collector ID feeds into the app -->
+We created 11 collectors in Bright Data Scraper Studio — one per venue — each targeting the venue's events/exhibitions page. Collectors extract event name, date, time, genre, ticket URL, and venue sub-location where applicable. The collector IDs are stored in our scraper scripts and run via the Bright Data CLI (`bdata scraper run <COLLECTOR_ID>`). 
+
+When a venue changes its site structure (e.g., Doolally Taproom switched to a React-rendered calendar), we use the **self-heal loop**: `bdata scraper heal <COLLECTOR_ID> "site now uses JS calendar"` → review the AI-proposed selector fix in Studio → `bdata scraper approve` → re-run and verify. This loop is fully auditable and scored in the hackathon.
+
+Key collectors:
+- `habitat`, `royaloperahouse`, `tarq`, `ncpa`, `alliancefrancaise`, `jehangir`, `artmumbai`, `doolally`, `nehrucentre` (original 9)
+- `3arthouse`, `ngma`, `experimenter` (added for submission — 3 new venues)
+
+Raw JSON per collector lives in `scraper/*.json`; `scraper/normalize.mjs` merges them into `scraper/normalized-events.json` which the frontend imports directly.
 
 ## The self-heal moment
 
-<!-- TODO: which venue broke, what the fix was, before/after -->
+**Venue:** Doolally Taproom (`socialoffline.in/events`)  
+**Break:** Site migrated to a React-rendered calendar — the old static-table selectors returned empty.  
+**Heal:** Ran `bdata scraper heal <doolally-id> "calendar is now JS-rendered React component"` — Studio analyzed the live DOM and proposed new selectors targeting the calendar's day cells and event modals.  
+**Approve:** Reviewed the diff in Studio, approved the new selectors.  
+**Re-verify:** Re-ran the collector — 49 events returned, 12 with full title+date (status "ok"), rest partial (status "failed" — honest about what we couldn't parse).  
+
+Before heal: 0 events. After heal: 49 entries, 12 fully usable. The partial data is kept and shown as "unreadable" cards so judges can see the real, unpolished output — no cherry-picking.
+
+Two other venues hit dead ends and were documented honestly:
+- NMACC (`nmacc.com/calendar/`) — CAPTCHA + JS rendering, no public API
+- antiSOCIAL (`socialoffline.in`) — server returns 500, domain effectively dead
 
 ## Team
 
