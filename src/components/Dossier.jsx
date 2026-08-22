@@ -11,9 +11,7 @@ function formatTime12h(time24) {
 
 function getRelativeTime(dateStr, time24) {
   if (!dateStr || !time24) return null;
-  const [y, mo, d] = dateStr.split("-").map(Number);
-  const [h, mi] = time24.split(":").map(Number);
-  const eventTime = new Date(y, mo - 1, d, h, mi);
+  const eventTime = new Date(`${dateStr}T${time24}:00+05:30`);
   const now = new Date();
   const diffMs = eventTime - now;
   if (diffMs <= 0) return "Started";

@@ -56,7 +56,8 @@ export default function App() {
     }
     setActiveGenres((prev) => {
       const next = new Set(prev);
-      next.has(genre) ? next.delete(genre) : next.add(genre);
+      if (next.has(genre)) next.delete(genre);
+      else next.add(genre);
       return next;
     });
   }
@@ -69,7 +70,7 @@ export default function App() {
   const selectedEvent = filtered.find((e) => e.id === selectedId) ?? filtered.find((e) => e.status === "ok");
 
   const liveVenueCount = new Set(EVENTS.filter((e) => e.status === "ok").map((e) => e.venue)).size;
-  const totalVenueCount = new Set(EVENTS.map((e) => e.venue)).size;
+  const failedVenueCount = new Set(EVENTS.filter((e) => e.status === "failed").map((e) => e.venue)).size;
 
   const okEvents = filtered.filter((e) => e.status === "ok");
   const hasNoOkResults = activeGenres.size > 0 && okEvents.length === 0;
@@ -89,7 +90,7 @@ export default function App() {
             <span className="mumbai-clock">{mumbaiTime}</span>
             <span>&middot;</span>
             <span>
-              <b>{liveVenueCount}</b> / {totalVenueCount} venues tracked live
+              <b className="live-count">{liveVenueCount}</b> live &middot; <b className="failed-count">{failedVenueCount}</b> unreadable
             </span>
           </div>
           <ThemeToggle theme={theme} onChange={setTheme} />
