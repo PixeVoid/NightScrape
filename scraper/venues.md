@@ -1,39 +1,59 @@
-﻿# Stagelight — Scraper Progress (Person A)
+﻿# NightScrape — Scraper Progress (Person A) — FINAL
 
-## Collector ID
-c_mt44cnhrgp7fwqbl4
+## Collectors used (multi-collector architecture — see README notes below)
+- c_mt44cnhrgp7fwqbl4 — Habitat, Royal Opera House (BookMyShow-ticketed sites)
+- c_mt4de493udmfwar7o — TARQ (gallery-archive pattern)
+- c_mt4e1e5vptg8d5akd — NCPA (multi-venue performing arts calendar)
+- c_mt4jv8fx1ewxx3hvcl — Alliance Francaise de Bombay
+- c_mt4higo26dupe48b9 — Doolally Taproom (heal-demo collector, see below)
+- c_mt4pk0d9118oauthf0 — Jehangir Art Gallery
+- c_mt4prkq21hv9hk8ure — Nehru Centre (weak result, see below)
+- c_mt4qe0se1cvec06gow — Art Mumbai (filtered, see below)
 
-## Working / clean data
-- Prithvi Theatre — https://prithvitheatre.org — DROPPED (see below)
-- The Habitat — https://indiehabitat.com — clean (2 events missing date/venue field — minor gap)
-- Royal Opera House — https://www.royaloperahouse.in/upcoming-shows/ — clean
+## Working — clean, current data (7 Mumbai sites)
+- The Habitat — indiehabitat.com — clean, minor: 2 events missing date/venue
+- Royal Opera House — royaloperahouse.in/upcoming-shows — clean
+- TARQ — tarq.in/exhibitions — clean, minor: some duplicate text fields, exhibition_status field unreliable (use event_date for current/past logic instead)
+- NCPA — ncpamumbai.com/event-calendar — clean, 60+ real Aug-Sept 2026 events across 5 sub-venues, minor: genre text leaks into event_date field
+- Alliance Francaise de Bombay — bombay.afindia.org/events/categories/culture — clean, 2 real upcoming events
+- Jehangir Art Gallery — jehangirartgallery.com — clean, 5 real current exhibitions, minor: genre field duplicates event_name (no real genre on page)
+- Art Mumbai (filtered) — artmumbai.com/program — collector returned 6 events, but 4 were
+  Bengaluru satellite programming ("Art Mumbai Gateway"). Kept only the 2 genuine Mumbai
+  events: Chemould CoLab residency visit, Gateway of India shoreline sail. Project stays
+  strictly Mumbai-only.
 
-## Blocked — same root cause, heal in progress
-Issue: collector's schema waits for a BookMyShow ticket-link selector (learned from Habitat),
-times out on sites that don't sell tickets via BookMyShow.
-- NCPA — https://www.ncpamumbai.com/event-calendar/ — heal attempted, timed out at 600s,
-  server-side job may still be processing (409 another refactor job in progress on retry)
-- TARQ — https://www.tarq.in/exhibitions/ — same timeout, blocked by NCPA heal lock
-- Chemould Prescott Road — https://www.gallerychemould.com/exhibitions/ — same timeout
-- Chatterjee and Lal — https://chatterjeeandlal.com/shows/ — same timeout (correct URL now)
+## Self-healing demo — Doolally Taproom
+- doolally.in/web/events — JS-rendered (React) events calendar
+- Real, unstaged failure: only handful of 50 events returned full data (name/date/venue),
+  rest only returned genre + product_page_url
+- Heal run: bdata scraper heal + approve completed successfully (no errors)
+- Post-heal verification: improvement attempted but core issue persisted (still ~49/50
+  incomplete) — genuine partial fix, not a full resolution
+- Documented honestly as: real self-healing workflow demonstrated end-to-end
+  (break -> heal -> approve -> verify), even though the fix itself was only partial
+- Downstream handling: app can use reliable product_page_url field for all 50 events;
+  incomplete entries shown with minimal card (title/link only) instead of full details
 
-## Dropped permanently — do not retry
-- Prithvi Theatre — repeated 404 (crawler blocked, real site confirmed reachable elsewhere)
-- CSMVS — repeated 404, same pattern as Prithvi (backup only)
-- G5A Foundation — Bright Data policy block (Philanthropy/Non-Profit classification)
+## Weak / not prioritized further
+- Nehru Centre — nehrucentremumbai.in/whats-on — only 1/3 entries fully populated,
+  and that one event (Mumbai Art Fair) is dated Oct 2025 (past). Not used in final app.
+
+## Dropped permanently
+- Prithvi Theatre — repeated 404, crawler blocked (site confirmed live via manual check)
+- CSMVS — repeated 404, same pattern
+- G5A Foundation — Bright Data policy block (Non-Profit classification)
 - Shanmukhananda Hall — Bright Data policy block (Streaming Media classification)
+- NMACC — repeated AI-generation failures (4 attempts), collector never built successfully
+- antiSOCIAL / Khar Social — repeated AI-generation failures (4 attempts)
+- Chemould Prescott Road, Chatterjee and Lal — TARQ collector returned wrong/stale
+  TARQ data when pointed at these URLs; never got a dedicated collector due to time
+- DAG (Delhi) — out of scope (Mumbai-only project), also failed with crawler
+  selector timeout regardless
 
-## Not yet attempted
-- Alliance Francaise de Bombay — https://bombay.afindia.org/events/categories/culture/
-- antiSOCIAL / Khar Social — https://socialoffline.in/socialoffline-events/
-- Jehangir Art Gallery — https://www.jehangirartgallery.com
-- Nehru Centre — https://www.nehrucentremumbai.in/whats-on/
-- NMACC (JS-heavy, heal candidate) — https://nmaccindia.com/whats-on
-- Doolally Taproom (JS-heavy, heal candidate) — https://doolally.in/web/events
+## Architecture note for README
+Different site types (BookMyShow-ticketed venues, gallery archives, multi-venue calendars,
+cultural centres) required separate collectors rather than one universal scraper, since a
+single collector's schema over-fits to the site it was trained on. This mirrors how a real
+production scraping system would be built — purpose-built collectors per site family.
 
-## Next steps
-1. Retry NCPA heal once 409 lock clears
-2. Once NCPA heals, re-run TARQ / Chemould / Chatterjee and Lal
-3. Clear remaining untried static sites above
-4. Do the real JS-heavy heal demo on NMACC or Doolally (screen-record)
-5. Build failed source reporting for dropped sites
+## Final count: 6 clean Mumbai sites + 1 filtered Mumbai site (Art Mumbai, 2 events) + 1 documented self-heal (partial fix) = 8 sites total, strictly Mumbai
