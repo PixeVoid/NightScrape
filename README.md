@@ -2,7 +2,8 @@
 
 A real-time interactive map of Mumbai venue events — scrape, normalize, and explore what's happening tonight across 16 venues.
 
-🌐 **Live demo:** [https://night-scrape.vercel.app/](https://night-scrape.vercel.app/)
+🌐 **Live demo:** [https://night-scrape.vercel.app/](https://night-scrape.vercel.app/)  
+📁 **Videos (demo, failure & self-heal captures):** [NightScrape drive folder](https://drive.google.com/drive/folders/18G-UuwQJ_84RJ0o-P8GagOGtVNQRER5H?usp=drive_link)
 
 Built for the [Into the Scrape-Verse](https://www.wemakedevs.org/hackathons/scrape-verse) hackathon, using [Bright Data Scraper Studio](https://docs.brightdata.com/datasets/scraper-studio/overview).
 
@@ -89,11 +90,6 @@ Before heal: 0 events. After heal: 49 entries, 12 fully usable. The partial data
 Two other venues hit dead ends and were documented honestly:
 - NMACC (`nmacc.com/calendar/`) — CAPTCHA + JS rendering, no public API
 - antiSOCIAL (`socialoffline.in`) — server returns 500, domain effectively dead
-
-## Demo & proof videos
-
-Scraper runs, the self-heal loop, and before/after captures are in this drive folder:  
-📁 [NightScrape — scrape & heal videos](https://drive.google.com/drive/folders/18G-UuwQJ_84RJ0o-P8GagOGtVNQRER5H?usp=drive_link)
 
 ## Team
 
