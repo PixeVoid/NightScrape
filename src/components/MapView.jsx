@@ -29,7 +29,7 @@ function FlyToSelection({ event }) {
     if (event?.lat != null && event?.lng != null) {
       map.flyTo([event.lat, event.lng], Math.max(map.getZoom(), 13), { duration: 0.6 });
     }
-  }, [map, event?.venue]);
+  }, [map, event?.lat, event?.lng]);
   return null;
 }
 

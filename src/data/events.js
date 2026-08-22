@@ -1,4 +1,4 @@
-// Real scraper output from 8 Mumbai venues (Bright Data Scraper Studio),
+// Real scraper output from 16 Mumbai venues (Bright Data Scraper Studio),
 // normalized by scraper/normalize.mjs from the raw per-collector JSON in
 // scraper/*.json. Re-run that script and re-copy the output here after any
 // new scraper run — see scraper/venues.md for collector IDs and per-venue notes.

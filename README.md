@@ -1,6 +1,6 @@
 # NightScrape
 
-A real-time interactive map of Mumbai venue events — scrape, normalize, and explore what's happening tonight across 10+ venues.
+A real-time interactive map of Mumbai venue events — scrape, normalize, and explore what's happening tonight across 16 venues.
 
 🌐 **Live demo:** [https://night-scrape.vercel.app/](https://night-scrape.vercel.app/)
 
@@ -49,7 +49,7 @@ npx -p @brightdata/cli bdata scraper approve <COLLECTOR_ID> --url <URL>
 
 ## What it does
 
-NightScrape scrapes event listings from 10 Mumbai venues (The Habitat, Royal Opera House, TARQ, NCPA, Alliance Française, Jehangir Art Gallery, Art Mumbai, Doolally Taproom, 3 Art House, NGMA Mumbai, Experimenter Gallery) using Bright Data Scraper Studio. Each venue has a custom collector that handles its unique HTML/JS structure. The raw data is normalized into a unified contract (`{ id, venue, title, genre, date, time, lat, lng, ticketUrl, status }`) and rendered on an interactive CARTO map with venue pins connected by a spider-web network.
+NightScrape scrapes event listings from 16 Mumbai venues (The Habitat, Royal Opera House, NCPA, Alliance Française de Bombay, Jehangir Art Gallery, Art Mumbai, Doolally Taproom, 3 Art House, NGMA Mumbai, Experimenter Gallery, R-City Mall, Phoenix Marketcity, The Fine Arts Society, Dome India, Prithvi Theatre, St. Andrew's Auditorium) using Bright Data Scraper Studio. Each venue has a custom collector that handles its unique HTML/JS structure. The raw data is normalized into a unified contract (`{ id, venue, title, genre, date, time, lat, lng, ticketUrl, status }`) and rendered on an interactive CARTO map with venue pins connected by a spider-web network. (TARQ is also collected but currently returns only past exhibitions, so it's not shown on the live map.)
 
 The UI features: a live Mumbai clock in the top bar, genre filter pills with live event counts and a More/Less toggle, real-time search across the event rail, a dossier panel with a countdown timer and scroll hint, spring-physics animations on cards and chips, and a theme toggle with rotating sun/moon icons. Failed scrapes are surfaced honestly — dashed pins and flagged cards — rather than hidden.
 
@@ -65,13 +65,14 @@ Event data lives in `src/data/events.js`, shaped as:
 
 ## How we used Scraper Studio
 
-We created 11 collectors in Bright Data Scraper Studio — one per venue — each targeting the venue's events/exhibitions page. Collectors extract event name, date, time, genre, ticket URL, and venue sub-location where applicable. The collector IDs are stored in our scraper scripts and run via the Bright Data CLI (`bdata scraper run <COLLECTOR_ID>`). 
+We created 17 collectors in Bright Data Scraper Studio — one per venue — each targeting the venue's events/exhibitions page. Collectors extract event name, date, time, genre, ticket URL, and venue sub-location where applicable. The collector IDs are stored in our scraper scripts and run via the Bright Data CLI (`bdata scraper run <COLLECTOR_ID>`). 
 
 When a venue changes its site structure (e.g., Doolally Taproom switched to a React-rendered calendar), we use the **self-heal loop**: `bdata scraper heal <COLLECTOR_ID> "site now uses JS calendar"` → review the AI-proposed selector fix in Studio → `bdata scraper approve` → re-run and verify. This loop is fully auditable and scored in the hackathon.
 
 Key collectors:
-- `habitat`, `royaloperahouse`, `tarq`, `ncpa`, `alliancefrancaise`, `jehangir`, `artmumbai`, `doolally`, `nehrucentre` (original 9)
-- `3arthouse`, `ngma`, `experimenter` (added for submission — 3 new venues)
+- `habitat`, `royaloperahouse`, `tarq`, `ncpa`, `alliancefrancaise`, `jehangir`, `artmumbai`, `doolally` (original 8)
+- `3arthouse`, `ngma`, `experimenter` (added — first batch of new venues)
+- `rcity`, `phoenix`, `finearts`, `dome`, `prithvi`, `standrews` (added — Powai / Eastern Freeway / western-suburb coverage)
 
 Raw JSON per collector lives in `scraper/*.json`; `scraper/normalize.mjs` merges them into `scraper/normalized-events.json` which the frontend imports directly.
 
@@ -88,6 +89,11 @@ Before heal: 0 events. After heal: 49 entries, 12 fully usable. The partial data
 Two other venues hit dead ends and were documented honestly:
 - NMACC (`nmacc.com/calendar/`) — CAPTCHA + JS rendering, no public API
 - antiSOCIAL (`socialoffline.in`) — server returns 500, domain effectively dead
+
+## Demo & proof videos
+
+Scraper runs, the self-heal loop, and before/after captures are in this drive folder:  
+📁 [NightScrape — scrape & heal videos](https://drive.google.com/drive/folders/18G-UuwQJ_84RJ0o-P8GagOGtVNQRER5H?usp=drive_link)
 
 ## Team
 
