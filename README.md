@@ -3,7 +3,8 @@
 A real-time interactive map of Mumbai venue events — scrape, normalize, and explore what's happening tonight across 16 venues.
 
 🌐 **Live demo:** [https://night-scrape.vercel.app/](https://night-scrape.vercel.app/)  
-📁 **Videos (demo, failure & self-heal captures):** [NightScrape drive folder](https://drive.google.com/drive/folders/18G-UuwQJ_84RJ0o-P8GagOGtVNQRER5H?usp=drive_link)
+📁 **Videos (demo, failure & self-heal captures):** [NightScrape drive folder](https://drive.google.com/drive/folders/18G-UuwQJ_84RJ0o-P8GagOGtVNQRER5H?usp=drive_link)  
+▶️ **Demo walkthrough (≤3 min):** [YouTube demo video](https://youtu.be/exrdtAK-edY)
 
 Built for the [Into the Scrape-Verse](https://www.wemakedevs.org/hackathons/scrape-verse) hackathon, using [Bright Data Scraper Studio](https://docs.brightdata.com/datasets/scraper-studio/overview).
 
